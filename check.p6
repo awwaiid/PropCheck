@@ -1,3 +1,4 @@
+#!/usr/bin/env perl6
 
 use lib 'lib';
 use Test;
@@ -38,7 +39,7 @@ quick-check &prop-idempotent, :( Array of Int );
 
 quick-check { (sort @^m).min == (sort @^m)[0] }, :( Array of Int );
 
-sub prop-min-first(Array[Int] $stuff) { (sort $stuff).min == (sort $stuff)[0] }
+sub prop-min-first(Int @stuff) { (sort @stuff).min == (sort @stuff)[0] }
 
 quick-check &prop-min-first;
 

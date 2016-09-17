@@ -3,18 +3,15 @@ unit module Test::QuickCheck;
 use Test;
 
 multi gen(Int) { 1000000.rand.Int }
-# multi gen(Int $n where * %% 2) { (1000000.rand / 2).Int  }
 
 multi gen(Array[Int]) {
-  note "gen: Array[Int]";
   (^10).map({ gen(Int) }).Array
 }
 
-# multi gen(Positional) {
-#   note "Positional!";
-#   # (^(100.rand.Int)).map({ gen(Int) }).Array
-#   (^(100.rand.Int)).map({ gen(Int) }).list
-# }
+multi gen(Positional[Int]) {
+  my Int @thing = (^10).map({ gen(Int) }).list;
+  @thing;
+}
 
 our sub verify-one( &f, &predicate, :$input-pattern ) {
   CATCH {
@@ -27,7 +24,7 @@ our sub verify-one( &f, &predicate, :$input-pattern ) {
     }
   }
   my $sig = $input-pattern || &f.signature;
-  my @params = &f.signature.params.map: -> $p {
+  my @params = $sig.params.map: -> $p {
     # say "Param: {$p.gist}";
     # say "Param: {$p.type}";
     gen($p.type)
