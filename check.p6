@@ -1,6 +1,7 @@
 
+use lib 'lib';
 use Test;
-use Test::QuickCheck;
+use Test::PropCheck;
 
 sub is-even($n) { $n %% 2 }
 

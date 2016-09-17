@@ -10,11 +10,11 @@ multi gen(Array[Int]) {
   (^10).map({ gen(Int) }).Array
 }
 
-multi gen(Positional) {
-  note "Positional!";
-  # (^(100.rand.Int)).map({ gen(Int) }).Array
-  (^(100.rand.Int)).map({ gen(Int) }).list
-}
+# multi gen(Positional) {
+#   note "Positional!";
+#   # (^(100.rand.Int)).map({ gen(Int) }).Array
+#   (^(100.rand.Int)).map({ gen(Int) }).list
+# }
 
 our sub verify-one( &f, &predicate, :$input-pattern ) {
   CATCH {
@@ -29,10 +29,10 @@ our sub verify-one( &f, &predicate, :$input-pattern ) {
   my $sig = $input-pattern || &f.signature;
   my @params = &f.signature.params.map: -> $p {
     # say "Param: {$p.gist}";
-    say "Param: {$p.type}";
+    # say "Param: {$p.type}";
     gen($p.type)
   }
-  say "Params: {@params.gist}";
+  # say "Params: {@params.gist}";
   my $result = &f(|@params);
   # say "Result: {$result.gist}";
   my $is-ok = so &predicate($result);
